@@ -16,6 +16,12 @@ type bookType = {
   authorId: number;
 };
 
+const authors = [
+  { id: 1, name: "J. K. Rowling" },
+  { id: 2, name: "J. R. R. Tolkien" },
+  { id: 3, name: "Brent Weeks" },
+];
+
 const books: bookType[] = [
   { id: 1, name: "Harry Potter and the Chamber of Secrets", authorId: 1 },
   { id: 2, name: "Harry Potter and the Prisoner of Azkaban", authorId: 1 },
@@ -34,6 +40,21 @@ const BookType = new GraphQLObjectType({
     id: { type: new GraphQLNonNull(GraphQLInt) }, // Wrap with GraphQLNonNull
     name: { type: new GraphQLNonNull(GraphQLString) }, // Wrap with GraphQLNonNull
     authorId: { type: new GraphQLNonNull(GraphQLInt) }, // Wrap with GraphQLNonNull
+    author: {
+      type: AuthorType,
+      resolve: (book: bookType) => {
+        return authors.find((author) => author.id === book.authorId);
+      },
+    },
+  }),
+});
+
+const AuthorType = new GraphQLObjectType({
+  name: "Author",
+  description: "This represents a author of a book",
+  fields: () => ({
+    id: { type: new GraphQLNonNull(GraphQLInt) },
+    name: { type: new GraphQLNonNull(GraphQLString) },
   }),
 });
 
@@ -45,6 +66,11 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       description: "List of All books",
       resolve: () => books,
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      description: "List of All authors",
+      resolve: () => authors,
     },
   }),
 });
