@@ -3,7 +3,13 @@ const { graphqlHTTP } = require("express-graphql");
 const app = express();
 const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require("graphql");
 
-const books = [
+type bookType = {
+  id: number;
+  name: string;
+  authorId: number;
+};
+
+const books: bookType[] = [
   { id: 1, name: "Harry Potter and the Chamber of Secrets", authorId: 1 },
   { id: 2, name: "Harry Potter and the Prisoner of Azkaban", authorId: 1 },
   { id: 3, name: "Harry Potter and the Goblet of Fire", authorId: 1 },
