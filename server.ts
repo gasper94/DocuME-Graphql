@@ -16,6 +16,11 @@ type bookType = {
   authorId: number;
 };
 
+type authorType = {
+  id: number;
+  name: string;
+};
+
 const authors = [
   { id: 1, name: "J. K. Rowling" },
   { id: 2, name: "J. R. R. Tolkien" },
@@ -55,6 +60,12 @@ const AuthorType = new GraphQLObjectType({
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLInt) },
     name: { type: new GraphQLNonNull(GraphQLString) },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve: (author: authorType) => {
+        return books.filter((book) => book.authorId === author.id);
+      },
+    },
   }),
 });
 
