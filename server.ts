@@ -21,6 +21,13 @@ type authorType = {
   name: string;
 };
 
+type bookCommentsType = {
+  id: number;
+  comment: string;
+  bookId: number;
+  authorId: number;
+};
+
 const comments = [
   {
     id: 1,
@@ -36,7 +43,7 @@ const comments = [
   },
 ];
 
-const authors = [
+const authors: authorType[] = [
   { id: 1, name: "J. K. Rowling" },
   { id: 2, name: "J. R. R. Tolkien" },
   { id: 3, name: "Brent Weeks" },
@@ -61,6 +68,12 @@ const BookCommentype = new GraphQLObjectType({
     comment: { type: new GraphQLNonNull(GraphQLString) },
     bookId: { type: new GraphQLNonNull(GraphQLInt) },
     authorId: { type: new GraphQLNonNull(GraphQLInt) },
+    author: {
+      type: AuthorType,
+      resolve: (book: bookType) => {
+        return authors.find((author) => author.id === book.authorId);
+      },
+    },
   }),
 });
 
