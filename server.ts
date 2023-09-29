@@ -21,6 +21,21 @@ type authorType = {
   name: string;
 };
 
+const comments = [
+  {
+    id: 1,
+    comment: "this a comment about a book.",
+    bookId: 1,
+    authorId: 1,
+  },
+  {
+    id: 2,
+    comment: "this a comment about a book.",
+    bookId: 2,
+    authorId: 2,
+  },
+];
+
 const authors = [
   { id: 1, name: "J. K. Rowling" },
   { id: 2, name: "J. R. R. Tolkien" },
@@ -37,6 +52,17 @@ const books: bookType[] = [
   { id: 7, name: "The Way of Shadows", authorId: 3 },
   { id: 8, name: "Beyond the Shadows", authorId: 3 },
 ];
+
+const BookCommentype = new GraphQLObjectType({
+  name: "Comments",
+  description: "This represents a book comment",
+  fields: () => ({
+    id: { type: new GraphQLNonNull(GraphQLInt) },
+    comment: { type: new GraphQLNonNull(GraphQLString) },
+    bookId: { type: new GraphQLNonNull(GraphQLInt) },
+    authorId: { type: new GraphQLNonNull(GraphQLInt) },
+  }),
+});
 
 const BookType = new GraphQLObjectType({
   name: "Book",
@@ -73,6 +99,11 @@ const RootQueryType = new GraphQLObjectType({
   name: "Query",
   description: "Root Query",
   fields: () => ({
+    comments: {
+      type: new GraphQLList(BookCommentype),
+      description: "List of All comments",
+      resolve: () => comments,
+    },
     book: {
       type: BookType,
       description: "A single book",
