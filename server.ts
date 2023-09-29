@@ -28,7 +28,7 @@ type bookCommentsType = {
   authorId: number;
 };
 
-const comments = [
+const comments: bookCommentsType[] = [
   {
     id: 1,
     comment: "this a comment about a book.",
@@ -80,6 +80,12 @@ const BookCommentype = new GraphQLObjectType({
         return books.filter((book) => book.authorId === author.id);
       },
     },
+    // comments: {
+    //   type: new GraphQLList(BookCommentype),
+    //   resolve: (book: bookType) => {
+    //     return comments.filter((comment) => comment.bookId === book.id);
+    //   },
+    // },
   }),
 });
 
@@ -100,6 +106,12 @@ const BookType = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       resolve: (author: authorType) => {
         return books.filter((book) => book.authorId === author.id);
+      },
+    },
+    comments: {
+      type: new GraphQLList(BookCommentype),
+      resolve: (book: bookType) => {
+        return comments.filter((comment) => comment.bookId === book.id);
       },
     },
   }),
