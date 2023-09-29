@@ -74,6 +74,12 @@ const BookCommentype = new GraphQLObjectType({
         return authors.find((author) => author.id === book.authorId);
       },
     },
+    book: {
+      type: new GraphQLList(BookType),
+      resolve: (author: authorType) => {
+        return books.filter((book) => book.authorId === author.id);
+      },
+    },
   }),
 });
 
@@ -88,6 +94,12 @@ const BookType = new GraphQLObjectType({
       type: AuthorType,
       resolve: (book: bookType) => {
         return authors.find((author) => author.id === book.authorId);
+      },
+    },
+    book: {
+      type: new GraphQLList(BookType),
+      resolve: (author: authorType) => {
+        return books.filter((book) => book.authorId === author.id);
       },
     },
   }),
